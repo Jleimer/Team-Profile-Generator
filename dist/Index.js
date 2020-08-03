@@ -1,7 +1,7 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
-const generatePage = require('./Profile');
-const employee = require('./lib/Employee');
+const generatePage = require('../Profile');
+const employee = require('../lib/Employee');
 const promptUser =
     [
       {
@@ -39,16 +39,28 @@ const promptUser =
                 console.log('Please enter your email!')
             }
         }
+      },
+      {
+        type: 'input',
+        name: 'office',
+        message: 'Office phone number?',
+        validate: nameInput => {
+          if (nameInput) {
+              return true;
+          } else {
+              console.log('Please enter your phone number!')
+          }
+      } 
       }]
 
-      function writeToFile(data) {
-        return fs.writeFileSync(data)
+      function writeToFile(path, data) {
+        return fs.writeFileSync(path, data)
       };
 
       function init() {
         inquirer.prompt(promptUser).then(userResponses=> {
             console.log(userResponses);
-            writeToFile('./index.html', generatePage({...userResponses}));
+            writeToFile('../dist/index.html', generatePage({...userResponses}));
         })}
 
 init();
